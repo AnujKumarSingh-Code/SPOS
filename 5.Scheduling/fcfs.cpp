@@ -112,3 +112,95 @@ Consider three processes with the following attributes:
 - **Fairness**: Every process is scheduled based on arrival, ensuring that no process is skipped or starved.
 
 This FCFS scheduling code is a simple yet effective example of basic CPU scheduling, handling the fundamental aspects of process management in a system.*/
+
+/*CPU scheduling is a crucial function of the operating system (OS), responsible for managing the order and time for which processes access the CPU. In a multitasking environment, multiple processes are competing for CPU time, and efficient scheduling ensures that these processes are executed in a way that optimizes performance, improves responsiveness, and maximizes CPU utilization.
+
+### Objectives of CPU Scheduling
+
+1. **Maximize CPU Utilization**: Keep the CPU as busy as possible.
+2. **Maximize Throughput**: Increase the number of processes completed per unit time.
+3. **Minimize Turnaround Time**: Reduce the total time taken for a process to complete from arrival to exit.
+4. **Minimize Waiting Time**: Reduce the time a process spends in the waiting queue.
+5. **Minimize Response Time**: In interactive systems, reduce the time from submitting a request until the first response.
+
+To achieve these objectives, various CPU scheduling algorithms are implemented. They are broadly categorized into non-preemptive and preemptive algorithms.
+
+---
+
+### Types of CPU Scheduling Algorithms
+
+#### 1. First-Come, First-Served (FCFS)
+
+- **Mechanism**: Processes are scheduled in the order of their arrival.
+- **Characteristics**: Non-preemptive, simple to implement.
+- **Advantages**: Easy to understand and manage; no starvation.
+- **Disadvantages**: High waiting time for shorter processes if longer processes arrive first (convoy effect).
+- **Example**: If three processes arrive with burst times 4, 2, and 1, FCFS executes them in the same order of arrival.
+
+#### 2. Shortest Job First (SJF)
+
+- **Mechanism**: The process with the shortest burst time is scheduled next.
+- **Characteristics**: Can be non-preemptive or preemptive (Shortest Remaining Time First).
+- **Advantages**: Minimizes average waiting time.
+- **Disadvantages**: Can lead to starvation of longer processes.
+- **Example**: Given processes with burst times 5, 9, and 3, SJF schedules them in the order of 3 → 5 → 9.
+
+#### 3. Priority Scheduling
+
+- **Mechanism**: Each process is assigned a priority, and processes with higher priority are executed first.
+- **Characteristics**: Can be preemptive or non-preemptive.
+- **Advantages**: Useful for ensuring important tasks get CPU time quickly.
+- **Disadvantages**: May cause starvation of low-priority processes. Aging can be used to prevent starvation.
+- **Example**: If processes have priorities 2, 1, and 3 (lower number = higher priority), they’ll be scheduled in the order of priority: 1 → 2 → 3.
+
+#### 4. Round Robin (RR)
+
+- **Mechanism**: Processes are assigned a fixed time quantum and are cycled through in a round-robin manner.
+- **Characteristics**: Preemptive, ensuring fairness and equal distribution of CPU time.
+- **Advantages**: Suitable for time-sharing systems; reduces response time.
+- **Disadvantages**: Higher average waiting time if time quantum is not well-tuned.
+- **Example**: With a time quantum of 4, if three processes have burst times 10, 4, and 7, RR cycles through each process until completion.
+
+#### 5. Multilevel Queue Scheduling
+
+- **Mechanism**: The ready queue is divided into multiple queues, each with its own scheduling policy (e.g., interactive, batch).
+- **Characteristics**: Non-preemptive or preemptive, depending on queue configuration.
+- **Advantages**: Provides flexibility for handling different process types.
+- **Disadvantages**: Complex to manage and configure.
+- **Example**: Interactive processes in a high-priority queue, while batch jobs are placed in a lower-priority queue.
+
+#### 6. Multilevel Feedback Queue Scheduling
+
+- **Mechanism**: Similar to multilevel queue but allows processes to move between queues based on execution characteristics.
+- **Characteristics**: Preemptive, adapting to process behavior dynamically.
+- **Advantages**: Reduces response time for interactive processes while adapting to long-running tasks.
+- **Disadvantages**: Complexity in managing queues and transitions.
+- **Example**: Shorter jobs that don’t complete in the top-priority queue move to lower-priority queues.
+
+---
+
+### Key CPU Scheduling Metrics
+
+1. **CPU Utilization**: Percentage of time the CPU is actively working on processes.
+2. **Throughput**: Number of processes completed in a given time frame.
+3. **Turnaround Time**: Total time taken from process arrival to completion.
+4. **Waiting Time**: Total time a process spends waiting in the ready queue.
+5. **Response Time**: Time from process submission to the start of its execution.
+
+---
+
+### Preemptive vs. Non-Preemptive Scheduling
+
+- **Preemptive Scheduling**: Allows interruption of processes. If a higher-priority or shorter job arrives, the current process may be paused. Examples include SJF (preemptive), Priority (preemptive), and Round Robin.
+  
+- **Non-Preemptive Scheduling**: Once a process starts, it runs until completion without interruption. Examples include FCFS and SJF (non-preemptive).
+
+---
+
+### Factors in Choosing a Scheduling Algorithm
+
+- **System Type**: Interactive (like RR for equal time sharing) vs. Batch Processing (like FCFS for simplicity).
+- **Process Behavior**: Short or long CPU bursts (e.g., SJF for short bursts).
+- **Efficiency Needs**: Throughput vs. Response Time optimization.
+
+CPU scheduling is a balancing act, where the algorithm choice impacts system performance, user satisfaction, and process prioritization. The ideal scheduling algorithm is determined by the specific needs of the OS and the types of processes it manages.*/
