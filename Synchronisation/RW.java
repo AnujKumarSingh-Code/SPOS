@@ -372,3 +372,97 @@ This setup allows for efficient and safe access to shared resources by coordinat
 Enter the sequence of processes (1 for Reader, 2 for Writer):
 1 1 2 1 2
  */
+
+
+/*This Java code demonstrates a solution to the Readers-Writers problem, a classic synchronization challenge in operating systems. It ensures that multiple readers can access a shared resource concurrently, but a writer must have exclusive access.
+
+### Code Explanation
+
+1. **Imports**:
+   - `java.util.Scanner`: Used for reading input from the user.
+   - `java.util.concurrent.Semaphore`: Provides control over resource access, ensuring exclusive access for writers.
+   - `java.util.concurrent.locks.Lock` and `java.util.concurrent.locks.ReentrantLock`: Provides mutual exclusion for readers.
+
+2. **Class Definition and Variables**:
+   - `class RW`: Main class containing synchronization logic for readers and writers.
+   - `readLock` (of type `ReentrantLock`): Ensures mutual exclusion for modifying the reader count (`rc`) variable.
+   - `writeLock` (of type `Semaphore`): Controls exclusive access for writers, allowing only one writer at a time.
+   - `static int rc = 0`: A shared counter that tracks the number of readers currently reading.
+
+3. **Reader Method**:
+   - Method: `Reader(int id)`: Represents a reader’s actions.
+   - **Acquiring Access for Readers**:
+     - `readLock.lock()`: Acquires the lock to modify `rc`.
+     - `if (++rc == 1)`: If this is the first reader, it blocks writers by acquiring `writeLock`.
+     - `readLock.unlock()`: Releases `readLock`, allowing other readers to modify `rc`.
+   - **Reading**:
+     - `System.out.println("Reader " + id + " is reading.");`: Indicates reading in progress.
+     - `Thread.sleep(2500);`: Simulates reading time by making the reader wait for 2500 milliseconds.
+     - `System.out.println("Reader " + id + " finished reading.");`: Reading completed.
+   - **Releasing Access for Readers**:
+     - `readLock.lock()` and `if (--rc == 0)`: If this is the last reader, it releases `writeLock`, allowing writers to access the resource.
+     - `readLock.unlock()`: Releases `readLock` after modifying `rc`.
+
+4. **Writer Method**:
+   - Method: `Writer(int id)`: Represents a writer’s actions.
+   - **Acquiring Write Access**:
+     - `writeLock.acquire()`: Acquires `writeLock`, ensuring exclusive access.
+   - **Writing**:
+     - `System.out.println("Writer " + id + " is writing.");`: Indicates writing in progress.
+     - `Thread.sleep(1000);`: Simulates writing time by making the writer wait for 1000 milliseconds.
+     - `System.out.println("Writer " + id + " finished writing.");`: Writing completed.
+   - **Releasing Write Access**:
+     - `writeLock.release()`: Releases `writeLock`, allowing other writers or readers to access the resource.
+
+5. **Main Method**:
+   - Instantiates the `RW` class and prompts the user to enter the number of processes.
+   - Creates an array to store the sequence of processes (1 for Reader, 2 for Writer).
+   - Iterates over `seq[]`:
+     - For each element, if it’s `1`, a `Reader` thread is created; if `2`, a `Writer` thread is created.
+   - Closes the `Scanner`.
+
+### Sample Input and Execution
+
+Given input:
+```plaintext
+Enter the number of processes: 3
+Enter the sequence of processes (1 for Reader, 2 for Writer):
+1
+2
+1
+```
+
+The code creates two reader threads and one writer thread. The sequence and timing of output will vary based on the order and timing of thread execution.
+
+### Possible Viva Questions
+
+1. **What is the Readers-Writers Problem?**
+   - This is a synchronization problem where multiple readers can read a resource concurrently, but only one writer can access it at a time to prevent data inconsistency.
+
+2. **What are `ReentrantLock` and `Semaphore`?**
+   - `ReentrantLock` allows mutual exclusion for critical sections, particularly useful in ensuring that only one reader modifies the `rc` counter at a time.
+   - `Semaphore` allows for resource control. In this code, it allows only one writer to access the shared resource.
+
+3. **Why is `rc` incremented and decremented?**
+   - `rc` (reader count) tracks the number of active readers. When `rc` becomes 1, the first reader acquires the writer lock to prevent writers from accessing the resource. When `rc` becomes 0, the last reader releases the writer lock.
+
+4. **Why are `readLock.lock()` and `readLock.unlock()` used twice in the Reader method?**
+   - The first `readLock.lock()`/`unlock()` pair increments the reader count (`rc`), and the second pair decrements it. This ensures that no other thread modifies `rc` while checking and updating it.
+
+5. **What would happen if `writeLock` was not used?**
+   - Without `writeLock`, multiple writers could potentially access the resource simultaneously, leading to inconsistent data.
+
+6. **Explain the purpose of `Thread.sleep()` in both methods.**
+   - `Thread.sleep()` simulates time taken to read or write. It also demonstrates concurrency and synchronization by allowing other threads to potentially access the resource.
+
+7. **What would happen if a reader starts reading while a writer is writing?**
+   - In this program, it’s prevented by the `writeLock` semaphore, which ensures exclusive access for writers and no readers can access the resource if a writer is writing.
+
+8. **Why use multithreading in this code?**
+   - Multithreading enables concurrent execution of readers and writers, simulating a real-world shared resource where readers and writers may attempt access simultaneously.
+
+9. **What is the difference between `lock()` and `acquire()`?**
+   - `lock()` is a method from `Lock` that provides mutual exclusion for the lock, while `acquire()` is from `Semaphore`, used to acquire a permit to access a limited resource.
+
+10. **Can multiple readers read concurrently in this code?**
+    - Yes, multiple readers can read concurrently, as long as no writer is currently writing. This is controlled by the `writeLock` semaphore.*/
